@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html>
+   <head>
+      <link rel="stylesheet" type="text/css" href="styling.css">
+   </head>
+   <script>
+      var opened = new Boolean(false)
+      var ip_add = 0;
+      	function addGroupName() //Add button logic
+      	{
+      		var obj =document.getElementById("output");
+      		var gName = document.getElementsByName("group_name")[0].value
+      		var id = document.getElementsByName("id")[0].value
+      		var dial = document.getElementsByName("dial")[0].value
+      		var editable = 0;
+      		obj.value += "<phonebooks>\n";
+      		if (document.getElementById("yes_edit").checked == true) {
+      			editable += 1;
+      		} else {
+      			editable = 0;
+      		}
+      		obj.value += " <contacts group_name="+"\""+gName+"\""+" editable="+"\""+editable+ "\"" + " id=" +"\""+id+"\""+">\n";
+      		obj.value += " <contact\n";
+      		document.getElementById("conGroup").style.display="none";
+      		document.getElementById("contact").style.display="";
+      		document.getElementById("add").style.display="none";
+      
+      		document.getElementById("export").style.display="";
+      		document.getElementById("numButton").style.display="";
+      		document.getElementById("phonebook").style.display="";
+      	}
+      	function addData() //Export button logic
+      	 {
+      	 	//Get user input from the data field
+       		 var fName = document.getElementsByName("firstname")[0].value;
+      		 var lName = document.getElementsByName("lastname")[0].value;
+      		 var cType = document.getElementsByName("contact_type")[0].value;
+      		 var acID = document.getElementsByName("account_id")[0].value;
+      		 var subTo = document.getElementsByName("subscribe_to")[0].value;
+      		ip_add = subTo;
+      		 var obj = document.getElementById("output");
+        			 //Start adding content to data list
+        	 obj.value += "<!--"+fName+" "+lName+"-->\n"
+      		obj.value += "  first_name=" + "\""+fName+"\"\n";
+      		obj.value += "  last_name=" + "\""+lName+"\"\n";
+      		obj.value += "  contact_type=" + "\""+cType+"\"\n";
+      		obj.value += "  account_id=" + "\""+acID+"\"\n";
+      		obj.value += "  subscribe_to=" + "\""+cType+":"+acID+"@"+subTo+"\"\n";
+      		document.getElementById("same").style.display=""; //Displays checkbox
+      		//Boolean checking for voicemail and monitoring
+      		if (document.getElementById("vmail_yes").checked == true) {
+      			obj.value += "  has_voicemail=" + "\""+"1"+"\"\n";
+      		} else {
+      			obj.value += "  has_voicemail=" + "\""+"0"+"\"\n";
+      		}
+      		if (document.getElementById("yes_mon").checked == true) {
+      			obj.value += "  can_monitor=" + "\""+"1"+"\"\n";
+      		} else {
+      			obj.value += "  can_monitor=" + "\""+"0"+"\"\n";
+      		}
+      		document.getElementById("contact").reset();
+      		document.getElementById("sub_to").value = ip_add;
+      		//Handy snippet will auto-scroll
+      		document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
+      	 }
+      	 function setIp()//Reset ip address setting
+      	 {
+      	 	document.getElementById("sub_to").value = "";
+      	 }
+      
+      	 function closePhonebook() //Phonebook logic
+      	 {
+      	 	var obj = document.getElementById("output");
+      	 	obj.value += "</phonebooks>\n";
+      	 }
+      
+      	 function openNumbers() //Numbers button logic
+      	 {
+      	 	var obj = document.getElementById("output");
+      	 	if (opened == false)
+      	 	{
+      	 		document.getElementById("numbers").style.display="block";
+      			document.getElementById("addNum").style.display="";
+      			document.getElementById("cloContact").style.display="";
+      	 		obj.value += " >\n";
+      	 		obj.value += " <numbers>\n";
+      	 		opened = true;
+      	 	}
+      	 	else 
+      	 	{
+      	 		obj.value +=" </numbers>\n";
+      	 		opened = false;
+      	 		
+      	 	}
+      	 	document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
+      	 }
+      	 function addNumber() //ADD numbers logic
+      	 {
+      	 	var dial = document.getElementsByName("dial")[0].value;
+      	 	var dial_prefix = document.getElementsByName("dial_prefix")[0].value;
+      	 	var label = document.getElementsByName("label")[0].value;
+      	 	var obj = document.getElementById("output");
+      	 	var primary = 0;
+      	 	if (document.getElementById("yes_pri").checked == true) {
+      			obj.value += "<number dial=" + "\""+dial+"\""+" dial_prefix="+ "\""+dial_prefix+"\""+" label=" + "\""+label+"\""+" primary="+ "\""+"1"+"\""+" />\n";
+      		} else {
+      			obj.value += "<number dial=" + "\""+dial+"\""+" dial_prefix="+ "\""+dial_prefix+"\""+" label=" + "\""+label+"\"" +" />\n";
+      		}
+               //Little bit of hacking to get it to reset and display IP address
+   			   document.getElementById("contact").reset();
+               document.getElementById("sub_to").value = ip_add
+   			   document.getElementById("output").scrollTop = document.getElementById("output").scrollHeight;
+               document.getElementById("numbers").reset();
+      	 }
+      	 function closeContact()
+      	 {
+      	 	var obj = document.getElementById("output");
+      	 	obj.value += " </contact\n";
+      	 }
+   </script>
+   <!--Begin HTML -->
+   <div class="main">
+      <textarea rows ="20" cols="60" name ="output_box" id ="output" readonly></textarea>
+   </div>
+   <!-- Sexy form styling -->
+   <form id ="conGroup">
+      Group Name:
+      <input type"text" name="group_name">
+      <br>
+      Id:
+      <input type="text" name="id" style="margin-left: 75px">
+      <br>
+      Editable:
+      <input type="radio" name="editable" id="no_edit" value="0">
+      No
+      <input type="radio" name="editable" id="yes_edit" value="1" checked>
+      Yes
+      <br>
+   </form>
+   <form id="contact" style="display:none">
+      First name:
+      <input type="text" name="firstname">
+      <br>
+      Last name:
+      <input type="text" name="lastname">
+      <br>
+      Cont. type:
+      <input type="text" name="contact_type">
+      <br>
+      Account Id:
+      <input type="text" name="account_id">
+      <br>
+      IP Address:
+      <input type="text" name="subscribe_to" id="sub_to">
+      <input type="checkbox" id="same" value="1" onclick="setIp()" checked>Same as last?
+      <br>
+      Has Voicemail:
+      <input type="radio" name="has_voicemail" id ="vmail_no" value="0">
+      No
+      <input type="radio" name="has_voicemail"  id="vmail_yes" value="1" checked>
+      Yes
+      <br>
+      Can monitor:&nbsp
+      <input type="radio" name="can_monitor" id ="no_mon" value="0">
+      No
+      <input type="radio" name="can_monitor"  id="yes_mon" value="1" checked>
+      Yes
+      <br>
+   </form>
+   <div class="classname" type="button" id="add" onClick="addGroupName()">
+      Add ->
+   </div>
+   <div class="classname" type="button" id="export" onClick="addData()" style="display:none">
+      Export
+   </div>
+   <div class="close" type="button" id="numButton" onclick="openNumbers()" style="display:none">
+      Numbers
+   </div>
+   <div class="close" type="button" id="phonebook" onclick="closePhonebook()" style="display:none">
+      Phonebook
+   </div>
+   <!--Create hidden form for dial content.  Will show on Number press -->
+   <form id = "numbers" style="display:none">
+      Dial:&emsp;&emsp;&emsp;
+      <input type="text" name="dial">
+      <br>
+      Dial Prefix: 
+      <input type="text" name="dial_prefix">
+      <br>
+      Label: &emsp;&emsp;
+      <input type="text" name="label">
+      <br>
+      Primary:
+      <input type="radio" name="primary" id="no_pri" value="0">
+      No
+      <input type="radio" name="primary" id="yes_pri" value="1" checked="">
+      Yes
+   </form>
+   <div class="close" type="button" onclick="addNumber()" id="addNum" style="display:none">
+      Add Number
+   </div>
+   <div class="close" type="button" onclick="addNumber()" id="cloContact" style="display:none">
+     &lt/contact&gt
+   </div>
+</html>
