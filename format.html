@@ -4,7 +4,8 @@
       <link rel="stylesheet" type="text/css" href="styling.css">
    </head>
    <script>
-      var opened = new Boolean(false)
+      var opened = new Boolean(false);
+      var flag = new Boolean(false);
       var ip_add = 0;
       	function addGroupName() //Add button logic
       	{
@@ -85,6 +86,9 @@
       	 		obj.value += " >\n";
       	 		obj.value += " <numbers>\n";
       	 		opened = true;
+               document.getElementById("numButton").style.display="none";
+               document.getElementById("numButton2").style.display="";
+
       	 	}
       	 	else 
       	 	{
@@ -114,8 +118,24 @@
       	 }
       	 function closeContact()
       	 {
+            document.getElementById("cloContact2").style.display="none";
+            document.getElementById("cloContact").style.display="";
+            if (flag==false) 
+            {
       	 	var obj = document.getElementById("output");
-      	 	obj.value += " </contact\n";
+      	 	obj.value += " </contact>\n";
+            flag = true;
+            document.getElementById("cloContact").style.display="none";
+            document.getElementById("cloContact2").style.display="";
+          }
+          else
+          {
+            var obj = document.getElementById("output");
+            obj.value += " </contacts>\n";
+            flag = false;
+          }
+
+
       	 }
    </script>
    <!--Begin HTML -->
@@ -176,8 +196,11 @@
    <div class="close" type="button" id="numButton" onclick="openNumbers()" style="display:none">
       Numbers
    </div>
+   <div class="close" type="button" id="numButton2" onclick="openNumbers()" style="display:none">
+     &lt/Numbers&gt
+   </div>
    <div class="close" type="button" id="phonebook" onclick="closePhonebook()" style="display:none">
-      Phonebook
+     &lt/Phonebook&gt
    </div>
    <!--Create hidden form for dial content.  Will show on Number press -->
    <form id = "numbers" style="display:none">
@@ -199,7 +222,10 @@
    <div class="close" type="button" onclick="addNumber()" id="addNum" style="display:none">
       Add Number
    </div>
-   <div class="close" type="button" onclick="addNumber()" id="cloContact" style="display:none">
-     &lt/contact&gt
+   <div class="close" type="button" onclick="closeContact()" id="cloContact" style="display:none">
+     &lt/Contact&gt
+   </div>
+   <div class="close" type="button" onclick="closeContact()" id="cloContact2" style="display:none">
+     &lt/Contacts&gt
    </div>
 </html>
